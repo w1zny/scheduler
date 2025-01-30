@@ -1,26 +1,43 @@
 "use client"
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import WorkingDays from "./WorkingDays";
 import Students from "./Students";
+import Availability from "./Availability";
 
 export default function Home() {
-  const [submittedForms, setSubmittedForms] = useState(0);
-  const [selectedDays, setSelectedDays] = useState([]);
+  const [submittedForms, setSubmittedForms] = useState(2);
+  const [selectedDays, setSelectedDays] = useState(["Monday", "Tuesday", "Wednesday"]);
   const [studentList, setStudentList] = useState(["Jakub Vizner", "Lukas Vizner", "Vladimir Vizner", "Viktoria Majorosova"]);
+  const [studentsData, setStudentsData] = useState([]);
 
   const handleGoBack = () => {
     setSubmittedForms(submittedForms - 1);
-  }
+  };
 
   const handleGoForward = () => {
     setSubmittedForms(submittedForms + 1);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submitted");
-  }
+  };
+
+  useEffect(() => {
+    setStudentsData(
+      studentList.map((student) => ({
+        name: student,
+        days: {
+          Monday: [],
+          Tuesday: [],
+          Wednesday: [],
+          Thursday: [],
+          Friday: [],
+        },
+      }))
+    );
+  }, [studentList]);
 
   return (
     <main className={`main flex justify-center`}>
@@ -32,7 +49,11 @@ export default function Home() {
                                            setStudentList={setStudentList}
                                            handleGoBack={handleGoBack}
                                            handleGoForward={handleGoForward} />}
-        <button type="submit"></button>
+        {submittedForms === 2 && <Availability studentsData={studentsData}
+                                               setStudentsData={setStudentsData}
+                                               workingDays={selectedDays}
+                                               handleGoBack={handleGoBack}
+                                               handleGoForward={handleGoForward}/>}
       </form>
     </main>
   );
