@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      width: {
+        "25em": "25em"
+      },
       colors: {
         customWhite: {
           DEFAULT: "#eeeeee",
