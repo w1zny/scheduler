@@ -8,7 +8,8 @@ export default {
   theme: {
     extend: {
       width: {
-        "25em": "25em"
+        "25em": "25em",
+        "152px": "152px"
       },
       colors: {
         customWhite: {

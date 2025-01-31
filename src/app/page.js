@@ -6,9 +6,12 @@ import Students from "./Students";
 import Availability from "./Availability";
 
 export default function Home() {
-  const [submittedForms, setSubmittedForms] = useState(2);
-  const [selectedDays, setSelectedDays] = useState(["Monday", "Tuesday", "Wednesday"]);
-  const [studentList, setStudentList] = useState(["Jakub Vizner", "Lukas Vizner", "Vladimir Vizner", "Viktoria Majorosova"]);
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [submittedForms, setSubmittedForms] = useState(0);
+  const [studentList, setStudentList] = useState([]);
+
+  // exports
+  const [workingDays, setWorkingDays] = useState({});
   const [studentsData, setStudentsData] = useState([]);
 
   const handleGoBack = () => {
@@ -23,6 +26,15 @@ export default function Home() {
     e.preventDefault();
     console.log("submitted");
   };
+
+  useEffect(() => {
+    setWorkingDays(
+      selectedDays.reduce((acc, day) => {
+        acc[day] = "";
+        return acc;
+      }, {})
+    );
+  }, [selectedDays, setWorkingDays]);
 
   useEffect(() => {
     setStudentsData(
@@ -42,7 +54,9 @@ export default function Home() {
   return (
     <main className={`main flex justify-center`}>
       <form onSubmit={handleSubmit} className={`w-full flex justify-center`}>
-        {submittedForms === 0 && <WorkingDays selectedDays={selectedDays}
+        {submittedForms === 0 && <WorkingDays workingDays={workingDays}
+                                              setWorkingDays={setWorkingDays}
+                                              selectedDays={selectedDays}
                                               setSelectedDays={setSelectedDays}
                                               handleGoForward={handleGoForward} />}
         {submittedForms === 1 && <Students studentList={studentList}
@@ -51,7 +65,7 @@ export default function Home() {
                                            handleGoForward={handleGoForward} />}
         {submittedForms === 2 && <Availability studentsData={studentsData}
                                                setStudentsData={setStudentsData}
-                                               workingDays={selectedDays}
+                                               workingDays={workingDays}
                                                handleGoBack={handleGoBack}
                                                handleGoForward={handleGoForward}/>}
       </form>
