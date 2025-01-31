@@ -2,8 +2,11 @@
 
 import {useState, useEffect} from "react";
 import WorkingDays from "./WorkingDays";
+import DailyTimeSlots from "./DailyTimeSlots";
 import Students from "./Students";
+import StudentsLessons from "./StudentsLessons";
 import Availability from "./Availability";
+
 
 export default function Home() {
   const [selectedDays, setSelectedDays] = useState([]);
@@ -40,6 +43,7 @@ export default function Home() {
     setStudentsData(
       studentList.map((student) => ({
         name: student,
+        lessons: "",
         days: {
           Monday: [],
           Tuesday: [],
@@ -59,11 +63,19 @@ export default function Home() {
                                               selectedDays={selectedDays}
                                               setSelectedDays={setSelectedDays}
                                               handleGoForward={handleGoForward} />}
-        {submittedForms === 1 && <Students studentList={studentList}
+        {submittedForms === 1 && <DailyTimeSlots workingDays={workingDays}
+                                                 setWorkingDays={setWorkingDays}
+                                                 handleGoBack={handleGoBack}
+                                                 handleGoForward={handleGoForward} />}
+        {submittedForms === 2 && <Students studentList={studentList}
                                            setStudentList={setStudentList}
                                            handleGoBack={handleGoBack}
                                            handleGoForward={handleGoForward} />}
-        {submittedForms === 2 && <Availability studentsData={studentsData}
+        {submittedForms === 3 && <StudentsLessons studentsData={studentsData}
+                                                  setStudentsData={setStudentsData}
+                                                  handleGoBack={handleGoBack}
+                                                  handleGoForward={handleGoForward} />}
+        {submittedForms === 4 && <Availability studentsData={studentsData}
                                                setStudentsData={setStudentsData}
                                                workingDays={workingDays}
                                                handleGoBack={handleGoBack}

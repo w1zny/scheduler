@@ -23,39 +23,41 @@ export default function Availability({ studentsData, setStudentsData, workingDay
 	return (
 		<div className="w-1/2 py-2 px-9 m-9 bg-white rounded shadow-md">
 			<div className={`flex items-end`}>
-				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>3</h1>
+				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>5</h1>
 				<p className={`px-1 font-bold text-3xl`}>Fill the information</p>
 			</div>
 			<p className={`text-gray-400 py-1 italic`}>Enter a time slot when student is available for practice (12:00-17:30)</p>
 			{studentsData.length === 0 && <p className={`text-customGray-light font-bold text-3xl px-8 py-4`}>No students listed!</p>
 			}
 			{studentsData.length !== 0 && studentsData.map((student, studentIndex) => (
-				<div key={studentIndex} className={`mt-5`}>
-					<h2 className={`text-2xl font-bold`}><span className={`text-3xl pr-2`}>{studentIndex + 1}</span>{student.name}
+				<div key={studentIndex} className={`mt-5 ml-12`}>
+					<h2 className={`text-2xl mt-4 font-bold`}><span className={`text-3xl pr-2`}>{studentIndex + 1}</span>{student.name}
 					</h2>
 					{Object.keys(workingDays).map((day) => (
-						<div key={day} className="mt-2 ml-12">
-							<p className={`text-2xl`}>{day}:</p>
-							{student.days[day].map((timeSlot, timeIndex) => (
-								<div key={timeIndex} className={`flex items-center ml-8`}>
-									<input
-										type="text"
-										value={timeSlot}
-										onChange={(e) => handleTimeSlotChange(studentIndex, day, timeIndex, e.target.value)}
-										placeholder="Enter Time Slot"
-										className={`border border-customGray-light px-2 w-152px my-1 text-lg text-center rounded-md focus:outline-customOrange-light`}
-									/>
-									<button type="button" onClick={() => handleRemoveTimeSlot(studentIndex, day, timeIndex)}>
-										<Trash2 size={24} className={`ml-3 text-customOrange-light hover:text-customOrange-dark`}/>
-									</button>
-								</div>
-							))}
-							<button
-								type="button"
-								onClick={() => handleAddTimeSlot(studentIndex, day)}
-								className={`ml-8 px-4 text-lg rounded-md bg-customGray-light text-customWhite-dark shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
-							>Add Time Slot
-							</button>
+						<div key={day} className={`mt-2 ml-12 flex`}>
+							<p className={`text-2xl w-36`}>{day}:</p>
+							<div className={``}>
+								{student.days[day].map((timeSlot, timeIndex) => (
+									<div key={timeIndex} className={`flex items-center ml-8`}>
+										<input
+											type="text"
+											value={timeSlot}
+											onChange={(e) => handleTimeSlotChange(studentIndex, day, timeIndex, e.target.value)}
+											placeholder="Enter Time Slot"
+											className={`border border-customGray-light px-2 w-152px my-1 text-lg text-center rounded-md focus:outline-customOrange-light`}
+										/>
+										<button type="button" onClick={() => handleRemoveTimeSlot(studentIndex, day, timeIndex)}>
+											<Trash2 size={24} className={`ml-3 text-customOrange-light hover:text-customOrange-dark`}/>
+										</button>
+									</div>
+								))}
+								<button
+									type="button"
+									onClick={() => handleAddTimeSlot(studentIndex, day)}
+									className={`ml-8 mb-4 px-4 text-lg rounded-md bg-customGray-light text-customWhite-dark shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
+								>Add Time Slot
+								</button>
+							</div>
 						</div>
 					))}
 				</div>
