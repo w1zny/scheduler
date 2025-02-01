@@ -54,7 +54,7 @@ export default function Availability({ studentsData, setStudentsData, workingDay
 								<button
 									type="button"
 									onClick={() => handleAddTimeSlot(studentIndex, day)}
-									className={`ml-8 mb-4 px-4 text-lg rounded-md bg-customGray-light text-customWhite-dark shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
+									className={`ml-8 mb-4 mt-1 px-4 text-lg rounded-md bg-customGray-light text-customWhite-dark shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
 								>Add Time Slot
 								</button>
 							</div>

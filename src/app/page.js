@@ -33,35 +33,34 @@ export default function Home() {
 
   // pre posting checks
   const checkWorkingDays = () => {
+    let check = true;
+
     if (Object.keys(workingDays).length === 0) {
       setErrMsg("You didn't select any day as your working day!");
-      return false;
+      check = false;
     }
 
     Object.values(workingDays).forEach((value) => {
       const timeSlot = value.trim().split(" ").join("");
-
-      if (timeSlot.length !== 11) {
-        setErrMsg("The time span of your working days is incorrect!");
-        return false;
-      }
 
       const startTime = parseTime(timeSlot.slice(0, 5));
       const endTime = parseTime(timeSlot.slice(6));
 
       if (isNaN(startTime) || isNaN(endTime) || startTime > endTime) {
         setErrMsg("The time span of your working days is incorrect!");
-        return false;
+        check = false;
       }
 
     });
-    return true;
+    return check;
   };
 
   const checkStudentsData = () => {
+    let check = true;
+
     if (Object.keys(studentsData).length === 0) {
       setErrMsg("There are no students listed!");
-      return false;
+      check = false;
     }
 
     studentsData.forEach((student) => {
@@ -70,18 +69,26 @@ export default function Home() {
 
       if (lessons.length === 0) {
         setErrMsg(student.name + "'s lesson lengths are invalid");
-        return false;
+        check = false;
       }
 
       lessons.forEach((lesson) => {
         if (isNaN(parseInt(lesson))) {
           setErrMsg(student.name + "'s lesson lengths are invalid");
-          return false;
+          check = false;
         }
       });
 
       // time slot check
       Object.keys(student.days).forEach((day) => {
+        if (!(day in workingDays))
+          return;
+
+        if (student.days[day].length === 0) {
+          setErrMsg("There is no time slot given for " + student.name + " for " + day + "!");
+          check = false;
+        }
+
         let prevEndTime = parseTime("00:00");
 
         student.days[day].forEach((timeSlot) => {
@@ -89,13 +96,13 @@ export default function Home() {
           const endTime = parseTime(timeSlot.slice(6));
 
           if (isNaN(startTime) || isNaN(endTime) || startTime > endTime) {
-            setErrMsg(student.name + "'s time slot for " + day + " is incorrect!");
-            return false;
+            setErrMsg("There is something wrong with " + student.name + "'s time slot for " + day + "!" );
+            check = false;
           }
 
           if (prevEndTime > startTime) {
             setErrMsg(student.name + "'s time slots for " + day + " are in incorrect order!");
-            return false;
+            check = false;
           }
 
           prevEndTime = endTime;
@@ -103,7 +110,7 @@ export default function Home() {
       });
     });
 
-    return true;
+    return check;
   };
 
   // data sending
