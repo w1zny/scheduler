@@ -31,6 +31,7 @@ export default function Home() {
     return new Date("2025-02-01T" + timeString + "Z").getTime();
   }
 
+  // pre posting checks
   const checkWorkingDays = () => {
     if (Object.keys(workingDays).length === 0) {
       setErrMsg("You didn't select any day as your working day!");
@@ -58,10 +59,54 @@ export default function Home() {
   };
 
   const checkStudentsData = () => {
+    if (Object.keys(studentsData).length === 0) {
+      setErrMsg("There are no students listed!");
+      return false;
+    }
+
+    studentsData.forEach((student) => {
+      // lessons check
+      const lessons = student.lessons.trim().split(" ").join("").split(",");
+
+      if (lessons.length === 0) {
+        setErrMsg(student.name + "'s lesson lengths are invalid");
+        return false;
+      }
+
+      lessons.forEach((lesson) => {
+        if (isNaN(parseInt(lesson))) {
+          setErrMsg(student.name + "'s lesson lengths are invalid");
+          return false;
+        }
+      });
+
+      // time slot check
+      Object.keys(student.days).forEach((day) => {
+        let prevEndTime = parseTime("00:00");
+
+        student.days[day].forEach((timeSlot) => {
+          const startTime = parseTime(timeSlot.slice(0, 5));
+          const endTime = parseTime(timeSlot.slice(6));
+
+          if (isNaN(startTime) || isNaN(endTime) || startTime > endTime) {
+            setErrMsg(student.name + "'s time slot for " + day + " is incorrect!");
+            return false;
+          }
+
+          if (prevEndTime > startTime) {
+            setErrMsg(student.name + "'s time slots for " + day + " are in incorrect order!");
+            return false;
+          }
+
+          prevEndTime = endTime;
+        });
+      });
+    });
+
     return true;
   };
 
-
+  // data sending
   const handleSubmit = async (e) => {
     e.preventDefault();
 
