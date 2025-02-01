@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {ArrowLeft, ArrowRight, Trash2} from "lucide-react";
 
-export default function Availability({ studentsData, setStudentsData, workingDays, handleGoBack, handleGoForward }) {
+export default function Availability({ studentsData, setStudentsData, workingDays, handleGoBack, handleSubmit }) {
 	const handleAddTimeSlot = (studentIndex, day) => {
 		const updatedStudents = [...studentsData];
 		updatedStudents[studentIndex].days[day].push("");
@@ -68,7 +68,7 @@ export default function Availability({ studentsData, setStudentsData, workingDay
 								className={`px-2 text-customWhite-dark bg-customGray-light rounded-md shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
 				><ArrowLeft size={40}/>
 				</button>
-				<button type="submit" onClick={handleGoForward}
+				<button type="submit" onClick={handleSubmit}
 								className={`px-2 text-customWhite-dark bg-customOrange-light rounded-md shadow-md hover:bg-customOrange hover:shadow-none active:bg-customOrange-dark`}
 				><ArrowRight size={40}/>
 				</button>
