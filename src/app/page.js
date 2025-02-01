@@ -37,7 +37,7 @@ export default function Home() {
         return acc;
       }, {})
     );
-  }, [selectedDays, setWorkingDays]);
+  }, [selectedDays]);
 
   useEffect(() => {
     setStudentsData(

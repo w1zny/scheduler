@@ -21,14 +21,14 @@ export default function Availability({ studentsData, setStudentsData, workingDay
 	};
 
 	return (
-		<div className="w-1/2 py-2 px-9 m-9 bg-white rounded shadow-md">
+		<div className="w-1/2 py-2 px-9 m-9 bg-customWhite rounded shadow-md">
 			<div className={`flex items-end`}>
 				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>5</h1>
-				<p className={`px-1 font-bold text-3xl`}>Fill the information</p>
+				<p className={`px-1 font-bold text-3xl`}>What is your students&#39; availability?</p>
 			</div>
-			<p className={`text-gray-400 py-1 italic`}>Enter a time slot when student is available for practice (12:00-17:30)</p>
-			{studentsData.length === 0 && <p className={`text-customGray-light font-bold text-3xl px-8 py-4`}>No students listed!</p>
-			}
+			<p className={`text-gray-400 pt-1 italic`}>Format: 12:00-17:30</p>
+
+			{studentsData.length === 0 && <p className={`text-customGray-light font-bold text-3xl px-8 py-4`}>No students listed!</p>}
 			{studentsData.length !== 0 && studentsData.map((student, studentIndex) => (
 				<div key={studentIndex} className={`mt-5 ml-12`}>
 					<h2 className={`text-2xl mt-4 font-bold`}><span className={`text-3xl pr-2`}>{studentIndex + 1}</span>{student.name}
@@ -62,6 +62,7 @@ export default function Availability({ studentsData, setStudentsData, workingDay
 					))}
 				</div>
 			))}
+
 			<div className={`mx-9 my-8 flex items-end justify-between`}>
 				<button type="button" onClick={handleGoBack}
 								className={`px-2 text-customWhite-dark bg-customGray-light rounded-md shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}

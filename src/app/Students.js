@@ -24,7 +24,7 @@ export default function Students({ studentList, setStudentList, handleGoBack, ha
 		<div className={`w-1/2 py-2 px-9 m-9 bg-customWhite rounded shadow-md`}>
 			<div className={`flex items-end`}>
 				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>3</h1>
-				<p className={`px-1 font-bold text-3xl`}>List all your students</p>
+				<p className={`px-1 font-bold text-3xl`}>What are the names of your students?</p>
 			</div>
 			<p className={`text-gray-400 py-1 italic`}>Here you should also list every extra lessons like Class Period and Breaks</p>
 			<div className={`p-5 px-9 pb-9 flex items-end justify-between`}>
@@ -55,7 +55,7 @@ export default function Students({ studentList, setStudentList, handleGoBack, ha
 					))}
 				</div>
 			</div>
-			<div className={`mx-9 mb-8 flex items-end justify-between`}>
+			<div className={`mx-9 my-8 flex items-end justify-between`}>
 				<button type="button" onClick={handleGoBack}
 								className={`px-2 text-customWhite-dark bg-customGray-light rounded-md shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
 				><ArrowLeft size={40}/>

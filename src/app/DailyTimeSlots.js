@@ -30,7 +30,7 @@ export default function DailyTimeSlots({ workingDays, setWorkingDays, handleGoBa
 					</div>
 				))}
 			</div>
-			<div className={`mx-9 mb-8 flex items-end justify-between`}>
+			<div className={`mx-9 my-8 flex items-end justify-between`}>
 				<button type="button" onClick={handleGoBack}
 								className={`px-2 text-customWhite-dark bg-customGray-light rounded-md shadow-md hover:bg-customGray hover:shadow-none active:bg-customGray-dark`}
 				><ArrowLeft size={40}/>

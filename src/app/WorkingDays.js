@@ -20,7 +20,7 @@ export default function WorkingDays({ workingDays, setWorkingDays, handleGoForwa
 			<div className={`w-1/2 py-2 px-9 m-9 bg-customWhite rounded shadow-md items-end`}>
 				<div className={`flex items-end`}>
 					<h1 className={`font-logoFont text-8xl text-customOrange-light`}>1</h1>
-					<p className={`px-1 font-bold text-3xl`}>Choose your working days</p>
+					<p className={`px-1 font-bold text-3xl`}>Which days do you work?</p>
 				</div>
 				<div className={`p-5 px-9 pb-9 flex items-end justify-between`}>
 					<div className={`flex-column`}>
