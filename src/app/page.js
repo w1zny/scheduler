@@ -6,13 +6,15 @@ import DailyTimeSlots from "./DailyTimeSlots";
 import Students from "./Students";
 import StudentsLessons from "./StudentsLessons";
 import Availability from "./Availability";
+
 import {checkStudentsData, checkWorkingDays} from "@/app/checks";
+import {processData} from "@/actions";
 
 
 export default function Home() {
-  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedDays, setSelectedDays] = useState(["Monday","Wednesday"]);
   const [submittedForms, setSubmittedForms] = useState(0);
-  const [studentList, setStudentList] = useState([]);
+  const [studentList, setStudentList] = useState(["Jakub", "Lukas", "Vlado"]);
 
   const [errMsg, setErrMsg] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -48,14 +50,16 @@ export default function Home() {
       return;
     }
 
-    console.log("DATA SENT");
+    const result = await processData(workingDays, studentsData);
+
+    console.log(result);
   }
 
 
   useEffect(() => {
     setWorkingDays(
       selectedDays.reduce((acc, day) => {
-        acc[day] = "";
+        acc[day] = "12:00-17:00";
         return acc;
       }, {})
     );
@@ -65,11 +69,11 @@ export default function Home() {
     setStudentsData(
       studentList.map((student) => ({
         name: student,
-        lessons: "",
+        lessons: "20,45",
         days: {
-          Monday: [],
+          Monday: ["13:00-18:30"],
           Tuesday: [],
-          Wednesday: [],
+          Wednesday: ["12:30-17:30"],
           Thursday: [],
           Friday: [],
         },

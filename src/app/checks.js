@@ -1,4 +1,4 @@
-const parseTime = (timeString) => {
+export const parseTime = (timeString) => {
 	return new Date("2025-02-01T" + timeString + "Z").getTime();
 }
 
@@ -43,7 +43,7 @@ export const checkStudentsData = (workingDays, studentsData) => {
 				return;
 
 			if (student.days[day].length === 0)
-				errMsg = "There is no time slot given for " + student.name + "!";
+				errMsg = "Some of " + student.name + "'s time slots are missing!";
 
 			let prevEndTime = parseTime("00:00");
 
@@ -52,7 +52,7 @@ export const checkStudentsData = (workingDays, studentsData) => {
 				const endTime = parseTime(timeSlot.slice(6));
 
 				if (isNaN(startTime) || isNaN(endTime) || startTime > endTime)
-					errMsg = "There is something wrong with " + student.name + "'s time slots!" ;
+					errMsg = "Some of " + student.name + "'s time slots are incorrect!" ;
 
 				if (prevEndTime > startTime)
 					errMsg = student.name + "'s time slots are in an incorrect order!";
