@@ -6,6 +6,7 @@ import DailyTimeSlots from "./DailyTimeSlots";
 import Students from "./Students";
 import StudentsLessons from "./StudentsLessons";
 import Availability from "./Availability";
+import {checkStudentsData, checkWorkingDays} from "@/app/checks";
 
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
   const [studentList, setStudentList] = useState([]);
 
   const [errMsg, setErrMsg] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
   // exports
   const [workingDays, setWorkingDays] = useState({});
@@ -27,115 +29,28 @@ export default function Home() {
     setSubmittedForms(submittedForms + 1);
   };
 
-  const parseTime = (timeString) => {
-    return new Date("2025-02-01T" + timeString + "Z").getTime();
-  }
-
-  // pre posting checks
-  const checkWorkingDays = () => {
-    let check = true;
-
-    if (Object.keys(workingDays).length === 0) {
-      setErrMsg("You didn't select any day as your working day!");
-      check = false;
-    }
-
-    Object.values(workingDays).forEach((value) => {
-      const timeSlot = value.trim().split(" ").join("");
-
-      const startTime = parseTime(timeSlot.slice(0, 5));
-      const endTime = parseTime(timeSlot.slice(6));
-
-      if (isNaN(startTime) || isNaN(endTime) || startTime > endTime) {
-        setErrMsg("The time span of your working days is incorrect!");
-        check = false;
-      }
-
-    });
-    return check;
-  };
-
-  const checkStudentsData = () => {
-    let check = true;
-
-    if (Object.keys(studentsData).length === 0) {
-      setErrMsg("There are no students listed!");
-      check = false;
-    }
-
-    studentsData.forEach((student) => {
-      // lessons check
-      const lessons = student.lessons.trim().split(" ").join("").split(",");
-
-      if (lessons.length === 0) {
-        setErrMsg(student.name + "'s lesson lengths are invalid");
-        check = false;
-      }
-
-      lessons.forEach((lesson) => {
-        if (isNaN(parseInt(lesson))) {
-          setErrMsg(student.name + "'s lesson lengths are invalid");
-          check = false;
-        }
-      });
-
-      // time slot check
-      Object.keys(student.days).forEach((day) => {
-        if (!(day in workingDays))
-          return;
-
-        if (student.days[day].length === 0) {
-          setErrMsg("There is no time slot given for " + student.name + " for " + day + "!");
-          check = false;
-        }
-
-        let prevEndTime = parseTime("00:00");
-
-        student.days[day].forEach((timeSlot) => {
-          const startTime = parseTime(timeSlot.slice(0, 5));
-          const endTime = parseTime(timeSlot.slice(6));
-
-          if (isNaN(startTime) || isNaN(endTime) || startTime > endTime) {
-            setErrMsg("There is something wrong with " + student.name + "'s time slot for " + day + "!" );
-            check = false;
-          }
-
-          if (prevEndTime > startTime) {
-            setErrMsg(student.name + "'s time slots for " + day + " are in incorrect order!");
-            check = false;
-          }
-
-          prevEndTime = endTime;
-        });
-      });
-    });
-
-    return check;
-  };
-
   // data sending
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setErrMsg(null);
-    if (!checkWorkingDays() || !checkStudentsData())
+    setSubmitted(true)
+
+    const newErr = checkWorkingDays(workingDays);
+    if (newErr) {
+      setErrMsg(newErr);
       return;
-
-    try {
-      const response = await fetch("http://localhost:5000/api/students", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({workingDays, studentsData}),
-      });
-
-      const data = await response.json();
-      console.log("Server response:", data);
-    } catch (error) {
-      console.error("Error submitting form:", error);
     }
-  };
+
+    const studentErr = checkStudentsData(workingDays, studentsData);
+    if (studentErr) {
+      setErrMsg(studentErr);
+      return;
+    }
+
+    console.log("DATA SENT");
+  }
+
 
   useEffect(() => {
     setWorkingDays(
