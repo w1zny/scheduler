@@ -61,7 +61,7 @@ function getNextStudents(data, day, time) {
 		student.lessons.forEach(lesson => {
 			for (const timeSlot of student.days[day]) {
 				if ((time >= timeSlot[0] && time + lesson <= timeSlot[1]) ||
-					  (time < timeSlot[0] && timeSlot[0] + lesson <= timeSlot[1])) {
+					(time < timeSlot[0] && timeSlot[0] + lesson <= timeSlot[1])) {
 					lessons.push(lesson);
 					gap = Math.max(0, timeSlot[0] - time);
 				}
@@ -149,10 +149,18 @@ export async function processData(workingDays, studentsData) {
 
 		root.next = getNextStudents(cpyData, day, 0);
 		const path = findMinPath(root).path;
-		result[day] = path.slice(1).map(val => val.value)
+		result[day] = path.slice(1).map(val => val.value);
 
 		for (let student of path) cpyData = removeFromData(cpyData, student, 0);
 	})
 
-	return {result: result};
+	let error = null;
+	if (cpyData.length > 0) {
+		error = "Unable to finish the whole schedule for:";
+		cpyData.forEach(student => {
+			error += " " + student.name + " [" + student.lessons + "],";
+		})
+	}
+
+	return {result: result, error: error};
 }

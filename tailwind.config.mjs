@@ -13,9 +13,9 @@ export default {
       },
       colors: {
         customWhite: {
-          DEFAULT: "#eeeeee",
-          light: "#f2f2f2",
-          dark: "#e6e6e6"
+          DEFAULT: "#e6e6e6",
+          light: "#eeeeee",
+          dark: "#d1d1d1"
         },
         customGray: {
           DEFAULT: "#404040",

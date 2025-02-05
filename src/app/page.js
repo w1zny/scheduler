@@ -24,6 +24,8 @@ export default function Home() {
   const [studentsData, setStudentsData] = useState([]);
 
   const handleGoBack = () => {
+    if (submittedForms === 5)
+      setResult(null);
     setSubmittedForms(submittedForms - 1);
   };
 
@@ -52,6 +54,7 @@ export default function Home() {
     const tmpResult = await processData(workingDays, studentsData);
     handleGoForward();
     setResult(tmpResult.result);
+    setErrMsg(tmpResult.error);
   }
 
   useEffect(() => {
@@ -104,10 +107,10 @@ export default function Home() {
                                                workingDays={workingDays}
                                                handleGoBack={handleGoBack}
                                                handleSubmit={handleSubmit}/>}
-        {errMsg && <p className={`p-2 m-2 text-customOrange-light text-lg italic`}>{errMsg}</p>}
         {result && <Table result={result}
                           handleGoBack={handleGoBack}
                           handleGoForward={handleGoForward} />}
+        {errMsg && <p className={`p-2 m-2 text-customOrange-light text-lg italic`}>{errMsg}</p>}
       </form>
     </main>
   );
