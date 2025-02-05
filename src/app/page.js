@@ -12,9 +12,9 @@ import {checkStudentsData, checkWorkingDays} from "@/checks";
 import {processData} from "@/actions";
 
 export default function Home() {
-  const [selectedDays, setSelectedDays] = useState(["Monday","Wednesday"]);
+  const [selectedDays, setSelectedDays] = useState([]);
   const [submittedForms, setSubmittedForms] = useState(0);
-  const [studentList, setStudentList] = useState(["Jakub", "Lukas", "Vlado"]);
+  const [studentList, setStudentList] = useState([]);
 
   const [errMsg, setErrMsg] = useState(null);
   const [result, setResult] = useState(null);
@@ -60,7 +60,7 @@ export default function Home() {
   useEffect(() => {
     setWorkingDays(
       selectedDays.reduce((acc, day) => {
-        acc[day] = "12:00-17:00";
+        acc[day] = "";
         return acc;
       }, {})
     );
@@ -70,11 +70,11 @@ export default function Home() {
     setStudentsData(
       studentList.map((student) => ({
         name: student,
-        lessons: "20,45",
+        lessons: "",
         days: {
-          Monday: ["13:00-18:30"],
+          Monday: [],
           Tuesday: [],
-          Wednesday: ["12:30-17:30"],
+          Wednesday: [],
           Thursday: [],
           Friday: [],
         },
