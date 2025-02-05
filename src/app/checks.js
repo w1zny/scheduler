@@ -1,6 +1,7 @@
 export const parseTime = (timeString) => {
-	return new Date("2025-02-01T" + timeString + "Z").getTime();
-}
+	const [hours, minutes] = timeString.split(":").map(Number);
+	return hours * 60 + minutes;
+};
 
 export const checkWorkingDays = (workingDays) => {
 	if (Object.keys(workingDays).length === 0)
