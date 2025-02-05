@@ -1,7 +1,4 @@
-export const parseTime = (timeString) => {
-	const [hours, minutes] = timeString.split(":").map(Number);
-	return hours * 60 + minutes;
-};
+import { parseTime } from "@/utils";
 
 export const checkWorkingDays = (workingDays) => {
 	if (Object.keys(workingDays).length === 0)

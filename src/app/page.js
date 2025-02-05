@@ -6,10 +6,10 @@ import DailyTimeSlots from "./DailyTimeSlots";
 import Students from "./Students";
 import StudentsLessons from "./StudentsLessons";
 import Availability from "./Availability";
+import Table from "./Table";
 
-import {checkStudentsData, checkWorkingDays} from "@/app/checks";
+import {checkStudentsData, checkWorkingDays} from "@/checks";
 import {processData} from "@/actions";
-
 
 export default function Home() {
   const [selectedDays, setSelectedDays] = useState(["Monday","Wednesday"]);
@@ -17,7 +17,7 @@ export default function Home() {
   const [studentList, setStudentList] = useState(["Jakub", "Lukas", "Vlado"]);
 
   const [errMsg, setErrMsg] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState(null);
 
   // exports
   const [workingDays, setWorkingDays] = useState({});
@@ -36,7 +36,6 @@ export default function Home() {
     e.preventDefault();
 
     setErrMsg(null);
-    setSubmitted(true)
 
     const newErr = checkWorkingDays(workingDays);
     if (newErr) {
@@ -50,11 +49,10 @@ export default function Home() {
       return;
     }
 
-    const result = await processData(workingDays, studentsData);
-
-    console.log(result);
+    const tmpResult = await processData(workingDays, studentsData);
+    handleGoForward();
+    setResult(tmpResult.result);
   }
-
 
   useEffect(() => {
     setWorkingDays(
@@ -107,6 +105,9 @@ export default function Home() {
                                                handleGoBack={handleGoBack}
                                                handleSubmit={handleSubmit}/>}
         {errMsg && <p className={`p-2 m-2 text-customOrange-light text-lg italic`}>{errMsg}</p>}
+        {result && <Table result={result}
+                          handleGoBack={handleGoBack}
+                          handleGoForward={handleGoForward} />}
       </form>
     </main>
   );

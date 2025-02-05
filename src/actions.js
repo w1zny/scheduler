@@ -1,6 +1,6 @@
 "use server"
 
-import { parseTime } from "./app/checks"
+import { parseTime } from "@/utils"
 
 class Node {
 	constructor(value) {
@@ -142,15 +142,14 @@ export async function processData(workingDays, studentsData) {
 		Friday: null,
 	}
 
-	const trees = [];
 	let cpyData = JSON.parse(JSON.stringify(data));
 
 	Object.keys(workingDays).forEach(day => {
 		const root = new Node(day);
-		trees.push(root);
 
 		root.next = getNextStudents(cpyData, day, 0);
 		const path = findMinPath(root).path;
+		result[day] = path.slice(1).map(val => val.value)
 
 		for (let student of path) cpyData = removeFromData(cpyData, student, 0);
 	})
