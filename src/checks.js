@@ -37,15 +37,14 @@ export const checkStudentsData = (workingDays, studentsData) => {
 
 		// time slot check
 		Object.keys(student.days).forEach((day) => {
-			if (!(day in workingDays))
+			if (!(day in workingDays) || student.days[day].length === 0)
 				return;
-
-			if (student.days[day].length === 0)
-				errMsg = "Some of " + student.name + "'s time slots are missing!";
 
 			let prevEndTime = parseTime("00:00");
 
 			student.days[day].forEach((timeSlot) => {
+				if (timeSlot.length === 0) return;
+
 				const startTime = parseTime(timeSlot.slice(0, 5));
 				const endTime = parseTime(timeSlot.slice(6));
 

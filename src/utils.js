@@ -1,4 +1,6 @@
 export const parseTime = (timeString) => {
+	if (!timeString || timeString.length === 0) return null;
+
 	const [hours, minutes] = timeString.split(":").map(Number);
 	return hours * 60 + minutes;
 };
