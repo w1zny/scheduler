@@ -12,9 +12,9 @@ import {checkStudentsData, checkWorkingDays} from "@/checks";
 import {processData} from "@/actions";
 
 export default function Home() {
-  const [selectedDays, setSelectedDays] = useState(["Monday"]);
+  const [selectedDays, setSelectedDays] = useState([]);
   const [submittedForms, setSubmittedForms] = useState(0);
-  const [studentList, setStudentList] = useState(["Jakub", "Lukas", "Vladko"]);
+  const [studentList, setStudentList] = useState([]);
 
   const [err, setErr] = useState(null);
   const [result, setResult] = useState(null);
