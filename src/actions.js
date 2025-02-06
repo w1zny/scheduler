@@ -111,23 +111,24 @@ function removeFromData(data, student, del) {
 	return newData;
 }
 
-function findMinPath(node, currentPath = [], currentGapSum = 0, minPathData = { path: [], minGap: Infinity }) {
-	currentPath.push(node);
+function findMinPath(node, currPath = [], currGapSum = 0, minPathData = { path: [], minGap: Infinity }) {
+	currPath.push(node);
 
-	if (node.value.gap) currentGapSum += node.value.gap;
+	if (node.value.gap) currGapSum += node.value.gap;
 
 	if (!node.next || node.next.length === 0) {
-		if (currentGapSum < minPathData.minGap) {
-			minPathData.minGap = currentGapSum;
-			minPathData.path = [...currentPath];
+		currGapSum += (parseTime("24:00") - (node.value.time + node.value.length));
+		if (currGapSum < minPathData.minGap) {
+			minPathData.minGap = currGapSum;
+			minPathData.path = [...currPath];
 		}
 	} else {
 		node.next.forEach(child => {
-			findMinPath(child, currentPath, currentGapSum, minPathData);
+			findMinPath(child, currPath, currGapSum, minPathData);
 		});
 	}
 
-	currentPath.pop();
+	currPath.pop();
 
 	return minPathData;
 }

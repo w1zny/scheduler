@@ -12,18 +12,17 @@ export default function Students({ result, handleGoBack }) {
 	}
 
 	return (
-		<div className={`flex flex-col justify-center w-10/12 py-2 px-9 m-9 bg-customWhite rounded-md shadow-md `}>
+		<div className={`flex flex-col justify-center w-10/12  py-2 px-9 m-9 bg-customWhite rounded-md shadow-md `}>
 			<div className={`flex justify-around`}>
 				{Object.keys(result).map((day, index) => (
-					<div key={index} className={`flex justify-between`}>
-						{index !== 0 && <div className={`border mt-10 border-customGray-light`}></div>}
-						<table className={`mb-2 mx-3 min-w-52 flex flex-col items-center border-customGray-light`}>
+					<div key={index} className={`flex justify-around w-full`}>
+						<table className={`mb-2 min-w-52 flex-col items-center justify-start`}>
 							<thead>
 							<tr>
 								<th className={`text-2xl py-2 font-extrabold text-customGray`}>{day}</th>
 							</tr>
 							</thead>
-							<tbody>
+							<tbody className={`flex flex-col items-center justify-start`}>
 							{result[day] && result[day].map((student, index) => (
 								<tr key={index}>
 									{((student.gap > 0 && index !== 0) || breakCheck(student.name.toLowerCase()))  && <div className={`border-2 rounded border-customOrange-light`} style={getHeight(student.gap)}></div>}
