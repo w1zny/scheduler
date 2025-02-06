@@ -1,5 +1,5 @@
 import { parseNumber} from "@/utils";
-import {ArrowLeft, ArrowRight} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function Students({ result, handleGoBack }) {
 
@@ -8,11 +8,11 @@ export default function Students({ result, handleGoBack }) {
 	};
 
 	const breakCheck = (name) => {
-		return name === "break" || name === "prestavka" || name === "pauza" || name === "pause";
+		return name === "break" || name === "prestavka" || name === "prestávka" || name === "pauza" || name === "pause";
 	}
 
 	return (
-		<div className={`flex flex-col justify-center w-10/12  py-2 px-9 m-9 bg-customWhite rounded-md shadow-md `}>
+		<div className={`flex flex-col justify-center w-10/12 py-2 px-9 bg-customWhite rounded-md shadow-md `}>
 			<div className={`flex justify-around`}>
 				{Object.keys(result).map((day, index) => (
 					<div key={index} className={`flex justify-around w-full`}>

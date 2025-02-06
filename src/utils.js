@@ -1,7 +1,14 @@
 export const parseTime = (timeString) => {
-	if (!timeString || timeString.length === 0) return null;
+	if (!timeString || timeString.length !== 5) return null;
 
-	const [hours, minutes] = timeString.split(":").map(Number);
+	let [hours, minutes] = timeString.split(":").map(Number);
+
+	if (isNaN(hours) || isNaN(minutes) || hours === undefined || minutes === undefined ||
+		  hours < 0 || hours > 24 || minutes < 0 || minutes > 59)
+		return null;
+
+	if (hours === 24) hours = 0;
+
 	return hours * 60 + minutes;
 };
 

@@ -21,7 +21,7 @@ export default function Students({ studentList, setStudentList, handleGoBack, ha
 	};
 
 	return (
-		<div className={`w-1/2 py-2 px-9 m-9 bg-customWhite rounded shadow-md`}>
+		<div className={`w-1/2 py-2 px-9 bg-customWhite rounded shadow-md`}>
 			<div className={`flex items-end`}>
 				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>3</h1>
 				<p className={`px-1 font-bold text-3xl`}>What are the names of your students?</p>

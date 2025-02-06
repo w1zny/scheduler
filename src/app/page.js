@@ -16,7 +16,7 @@ export default function Home() {
   const [submittedForms, setSubmittedForms] = useState(0);
   const [studentList, setStudentList] = useState(["Jakub", "Lukas", "Vladko"]);
 
-  const [errMsg, setErrMsg] = useState(null);
+  const [err, setErr] = useState(null);
   const [result, setResult] = useState(null);
 
   // exports
@@ -37,25 +37,32 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setErrMsg(null);
+    setErr(null);
 
-    const newErr = checkWorkingDays(workingDays);
-    if (newErr) {
-      setErrMsg(newErr);
+    const daysErr = checkWorkingDays(workingDays);
+    if (daysErr) {
+      setErr(daysErr);
       return;
     }
 
+    console.log(daysErr);
+
     const studentErr = checkStudentsData(workingDays, studentsData);
     if (studentErr) {
-      setErrMsg(studentErr);
+      setErr(studentErr);
       return;
     }
 
     const tmpResult = await processData(workingDays, studentsData);
     handleGoForward();
     setResult(tmpResult.result);
-    setErrMsg(tmpResult.error);
+    setErr(tmpResult.error);
   }
+
+  useEffect(() => {
+    if (!err) return;
+    setSubmittedForms(err.page);
+  }, [err]);
 
   useEffect(() => {
     setWorkingDays(
@@ -83,25 +90,28 @@ export default function Home() {
   }, [studentList]);
 
   return (
-    <main className={`main flex justify-center`}>
-      <form onSubmit={handleSubmit} className={`w-full flex flex-col items-center justify-center`}>
+    <main className={`main flex flex-col items-center justify-center`}>
+      <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+        {(err) ? err.msg : "error placeholder"}
+      </p>
+      <form onSubmit={handleSubmit} className={`m-9 mt-0 w-full flex flex-col items-center justify-center`}>
         {submittedForms === 0 && <WorkingDays workingDays={workingDays}
                                               setWorkingDays={setWorkingDays}
                                               selectedDays={selectedDays}
                                               setSelectedDays={setSelectedDays}
-                                              handleGoForward={handleGoForward} />}
+                                              handleGoForward={handleGoForward}/>}
         {submittedForms === 1 && <DailyTimeSlots workingDays={workingDays}
                                                  setWorkingDays={setWorkingDays}
                                                  handleGoBack={handleGoBack}
-                                                 handleGoForward={handleGoForward} />}
+                                                 handleGoForward={handleGoForward}/>}
         {submittedForms === 2 && <Students studentList={studentList}
                                            setStudentList={setStudentList}
                                            handleGoBack={handleGoBack}
-                                           handleGoForward={handleGoForward} />}
+                                           handleGoForward={handleGoForward}/>}
         {submittedForms === 3 && <StudentsLessons studentsData={studentsData}
                                                   setStudentsData={setStudentsData}
                                                   handleGoBack={handleGoBack}
-                                                  handleGoForward={handleGoForward} />}
+                                                  handleGoForward={handleGoForward}/>}
         {submittedForms === 4 && <Availability studentsData={studentsData}
                                                setStudentsData={setStudentsData}
                                                workingDays={workingDays}
@@ -109,8 +119,7 @@ export default function Home() {
                                                handleSubmit={handleSubmit}/>}
         {result && <Table result={result}
                           handleGoBack={handleGoBack}
-                          handleGoForward={handleGoForward} />}
-        {errMsg && <p className={`p-2 m-2 text-customOrange-light text-lg italic`}>{errMsg}</p>}
+                          handleGoForward={handleGoForward}/>}
       </form>
     </main>
   );
