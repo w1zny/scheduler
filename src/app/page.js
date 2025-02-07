@@ -74,27 +74,33 @@ export default function Home() {
   }, [selectedDays]);
 
   useEffect(() => {
-    setStudentsData(
-      studentList.map((student) => ({
-        name: student,
-        lessons: "",
-        days: {
-          Monday: [],
-          Tuesday: [],
-          Wednesday: [],
-          Thursday: [],
-          Friday: [],
-        },
-      }))
-    );
+    setStudentsData((prevData) => {
+      const existingDataMap = new Map(prevData.map((student) => [student.name, student]));
+
+      return studentList.map((student) => {
+        return (
+          existingDataMap.get(student) || {
+            name: student,
+            lessons: "",
+            days: {
+              Monday: [],
+              Tuesday: [],
+              Wednesday: [],
+              Thursday: [],
+              Friday: [],
+            },
+          }
+        );
+      });
+    });
   }, [studentList]);
 
   return (
-    <main className={`main flex flex-col items-center justify-center`}>
+    <div className={`flex flex-col items-center justify-center`}>
       <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {(err) ? err.msg : "error placeholder"}
       </p>
-      <form onSubmit={handleSubmit} className={`m-9 mt-0 w-full flex flex-col items-center justify-center`}>
+      <form onSubmit={handleSubmit} className={`m-9 mb-20 mt-0 w-full flex flex-col items-center justify-center`}>
         {submittedForms === 0 && <WorkingDays workingDays={workingDays}
                                               setWorkingDays={setWorkingDays}
                                               selectedDays={selectedDays}
@@ -121,6 +127,6 @@ export default function Home() {
                           handleGoBack={handleGoBack}
                           handleGoForward={handleGoForward}/>}
       </form>
-    </main>
+    </div>
   );
 }
