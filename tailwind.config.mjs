@@ -9,7 +9,8 @@ export default {
     extend: {
       width: {
         "25em": "25em",
-        "152px": "152px"
+        "152px": "152px",
+        "1330px": "1330px"
       },
       colors: {
         customWhite: {

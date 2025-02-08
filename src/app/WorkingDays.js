@@ -12,7 +12,9 @@ export default function WorkingDays({ workingDays, setWorkingDays, handleGoForwa
 			else
 				tmpWorkingDays[day] = "";
 
-			return tmpWorkingDays;
+			return Object.fromEntries(
+				daysOfWeek.filter((d) => d in tmpWorkingDays).map((d) => [d, tmpWorkingDays[d]])
+			);
 		});
 	};
 

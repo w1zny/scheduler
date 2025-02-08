@@ -24,12 +24,17 @@ export default function Home() {
   const [studentsData, setStudentsData] = useState([]);
 
   const handleGoBack = () => {
-    if (submittedForms === 5)
+    setErr(null);
+    if (submittedForms === null) {
       setResult(null);
+      setSubmittedForms(4);
+      return;
+    }
     setSubmittedForms(submittedForms - 1);
   };
 
   const handleGoForward = () => {
+    setErr(null);
     setSubmittedForms(submittedForms + 1);
   };
 
@@ -45,8 +50,6 @@ export default function Home() {
       return;
     }
 
-    console.log(daysErr);
-
     const studentErr = checkStudentsData(workingDays, studentsData);
     if (studentErr) {
       setErr(studentErr);
@@ -54,13 +57,13 @@ export default function Home() {
     }
 
     const tmpResult = await processData(workingDays, studentsData);
-    handleGoForward();
     setResult(tmpResult.result);
     setErr(tmpResult.error);
+    setSubmittedForms(null);
   }
 
   useEffect(() => {
-    if (!err) return;
+    if (!err || !err.page) return;
     setSubmittedForms(err.page);
   }, [err]);
 
@@ -124,8 +127,7 @@ export default function Home() {
                                                handleGoBack={handleGoBack}
                                                handleSubmit={handleSubmit}/>}
         {result && <Table result={result}
-                          handleGoBack={handleGoBack}
-                          handleGoForward={handleGoForward}/>}
+                          handleGoBack={handleGoBack}/>}
       </form>
     </div>
   );

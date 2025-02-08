@@ -51,7 +51,6 @@ function parseData(workingDays, studentsData) {
 
 function getNextStudents(data, day, time) {
 	let nextStudents =[];
-	let minGap = Infinity;
 
 	data.forEach(student => {
 		const lessons = [];
@@ -68,10 +67,7 @@ function getNextStudents(data, day, time) {
 			}
 		})
 
-		if (lessons.length === 0 || gap === undefined || gap > minGap) return;
-
-		if (gap < minGap) nextStudents = [];
-		minGap = gap;
+		if (lessons.length === 0 || gap === undefined) return;
 
 		lessons.forEach(lesson => {
 			nextStudents.push(new Node({
@@ -117,7 +113,8 @@ function findMinPath(node, currPath = [], currGapSum = 0, minPathData = { path: 
 	if (node.value.gap) currGapSum += node.value.gap;
 
 	if (!node.next || node.next.length === 0) {
-		currGapSum += (parseTime("24:00") - (node.value.time + node.value.length));
+		const lastGap = parseTime("23:59") - (node.value.time + node.value.length);
+		currGapSum += lastGap;
 		if (currGapSum < minPathData.minGap) {
 			minPathData.minGap = currGapSum;
 			minPathData.path = [...currPath];
@@ -133,33 +130,59 @@ function findMinPath(node, currPath = [], currGapSum = 0, minPathData = { path: 
 	return minPathData;
 }
 
+const getPermutations = (arr) => {
+	if (arr.length === 0) return [[]];
+	if (arr.length === 1) return [arr];
+
+	let result = [];
+
+	arr.forEach((day, index) => {
+		let remaining = arr.slice(0, index).concat(arr.slice(index + 1));
+		let perms = getPermutations(remaining);
+
+		perms.forEach((perm) => result.push([day, ...perm]));
+	});
+
+	return result;
+};
+
 export async function processData(workingDays, studentsData) {
 	const data = parseData(workingDays, studentsData);
-	let result = {
-		Monday: null,
-		Tuesday: null,
-		Wednesday: null,
-		Thursday: null,
-		Friday: null,
-	}
 
-	let cpyData = JSON.parse(JSON.stringify(data));
+	const allPermutations = getPermutations(Object.keys(workingDays));
 
-	Object.keys(workingDays).forEach(day => {
-		const root = new Node(day);
+	let cpyData = [];
+	let minGap = Infinity;
+	let result = {};
 
-		root.next = getNextStudents(cpyData, day, 0);
-		const path = findMinPath(root).path;
-		result[day] = path.slice(1).map(val => val.value);
+	allPermutations.forEach(permutation => {
+		cpyData = JSON.parse(JSON.stringify(data));
+		let gap = 0;
+		let paths = {};
 
-		for (let student of path) cpyData = removeFromData(cpyData, student, 0);
+		permutation.forEach(day => {
+			const root = new Node(day);
+
+			root.next = getNextStudents(cpyData, day, 0);
+			const holder = findMinPath(root);
+
+			paths[day] = holder.path.slice(1).map(val => val.value);
+			gap += holder.minGap;
+
+			for (let student of holder.path) cpyData = removeFromData(cpyData, student, 0);
+		})
+
+		if (gap < minGap) {
+			minGap = gap;
+			result = paths;
+		}
 	})
 
-	let error = null;
+	let error = {msg: ""};
 	if (cpyData.length > 0) {
-		error = "Unable to finish the whole schedule for:";
+		error.msg += "Unable to finish the whole schedule for:";
 		cpyData.forEach(student => {
-			error += " " + student.name + " [" + student.lessons + "],";
+			error.msg += " " + student.name + " [" + student.lessons + "],";
 		})
 	}
 
