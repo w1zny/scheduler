@@ -27,14 +27,14 @@ export default function WorkingDays({ workingDays, setWorkingDays, handleGoForwa
 				<div className={`p-5 px-9 pb-9 flex items-end justify-between`}>
 					<div className={`flex-column`}>
 						{daysOfWeek.map((day, index) => (
-								<label key={index} className={`flex items-center mt-3 min-h-8 justify-between`}>
+								<label key={index} className={`flex items-center mt-3 min-h-8 justify-between hover:cursor-pointer hover:text-customGray-light`}>
 									<input
-										className={`accent-customOrange-light`}
+										className={`w-4 h-4 accent-customOrange-light`}
 										type="checkbox"
 										value={day}
 										onChange={() => handleCheckboxChange(day)}
 										checked={day in workingDays}
-									/><p className={`px-2 w-36 text-2xl hover:cursor-pointer hover:text-customGray-light`}>{day}</p>
+									/><p className={`px-2 w-36 text-2xl`}>{day}</p>
 								</label>
 						))}
 					</div>

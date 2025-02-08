@@ -150,7 +150,7 @@ const getPermutations = (arr) => {
 	return result;
 };
 
-export async function processData(workingDays, studentsData, getBest = 1) {
+export async function processData(workingDays, studentsData, getBest) {
 	const data = parseData(workingDays, studentsData);
 
 	let allPermutations;

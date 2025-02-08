@@ -8,6 +8,7 @@ import StudentsLessons from "./StudentsLessons";
 import Availability from "./Availability";
 import Table from "./Table";
 import LoadingWheel from "./LoadingWheel";
+import GetBestSchedule from "./GetBestSchedule";
 
 import {checkStudentsData, checkWorkingDays} from "@/checks";
 import {processData} from "@/actions";
@@ -24,12 +25,13 @@ export default function Home() {
   // exports
   const [workingDays, setWorkingDays] = useState({});
   const [studentsData, setStudentsData] = useState([]);
+  const [getBestSchedule, setGetBestSchedule] = useState(false);
 
   const handleGoBack = () => {
     setErr(null);
     if (submittedForms === null) {
       setResult(null);
-      setSubmittedForms(4);
+      setSubmittedForms(5);
       return;
     }
     setSubmittedForms(submittedForms - 1);
@@ -59,7 +61,7 @@ export default function Home() {
     }
 
     setIsLoading(true);
-    const tmpResult = await processData(workingDays, studentsData);
+    const tmpResult = await processData(workingDays, studentsData, getBestSchedule);
 
     setResult(tmpResult.result);
     setErr(tmpResult.error);
@@ -131,7 +133,11 @@ export default function Home() {
                                                  setStudentsData={setStudentsData}
                                                  workingDays={workingDays}
                                                  handleGoBack={handleGoBack}
-                                                 handleSubmit={handleSubmit}/>}
+                                                 handleGoForward={handleGoForward}/>}
+          {submittedForms === 5 && <GetBestSchedule getBestSchedule={getBestSchedule}
+                                                    setGetBestSchedule={setGetBestSchedule}
+                                                    handleGoBack={handleGoBack}
+                                                    handleSubmit={handleSubmit}/>}
           {result && <Table result={result}
                             handleGoBack={handleGoBack}/>}
         </form>)}
