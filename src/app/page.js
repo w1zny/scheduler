@@ -7,6 +7,7 @@ import Students from "./Students";
 import StudentsLessons from "./StudentsLessons";
 import Availability from "./Availability";
 import Table from "./Table";
+import LoadingWheel from "./LoadingWheel";
 
 import {checkStudentsData, checkWorkingDays} from "@/checks";
 import {processData} from "@/actions";
@@ -17,6 +18,7 @@ export default function Home() {
   const [studentList, setStudentList] = useState([]);
 
   const [err, setErr] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
 
   // exports
@@ -56,15 +58,19 @@ export default function Home() {
       return;
     }
 
+    setIsLoading(true);
     const tmpResult = await processData(workingDays, studentsData);
+
     setResult(tmpResult.result);
     setErr(tmpResult.error);
     setSubmittedForms(null);
+    setIsLoading(false);
   }
 
   useEffect(() => {
-    if (!err || !err.page) return;
-    setSubmittedForms(err.page);
+    if (err && err.page !== undefined) {
+      setSubmittedForms(err.page);
+    }
   }, [err]);
 
   useEffect(() => {
@@ -103,32 +109,32 @@ export default function Home() {
       <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {(err) ? err.msg : "error placeholder"}
       </p>
-      <form onSubmit={handleSubmit} className={`m-9 mb-20 mt-0 w-full flex flex-col items-center justify-center`}>
-        {submittedForms === 0 && <WorkingDays workingDays={workingDays}
-                                              setWorkingDays={setWorkingDays}
-                                              selectedDays={selectedDays}
-                                              setSelectedDays={setSelectedDays}
-                                              handleGoForward={handleGoForward}/>}
-        {submittedForms === 1 && <DailyTimeSlots workingDays={workingDays}
-                                                 setWorkingDays={setWorkingDays}
+      {(isLoading) ? (<LoadingWheel />) : (<form onSubmit={handleSubmit} className={`m-9 mb-20 mt-0 w-full flex flex-col items-center justify-center`}>
+          {submittedForms === 0 && <WorkingDays workingDays={workingDays}
+                                                setWorkingDays={setWorkingDays}
+                                                selectedDays={selectedDays}
+                                                setSelectedDays={setSelectedDays}
+                                                handleGoForward={handleGoForward}/>}
+          {submittedForms === 1 && <DailyTimeSlots workingDays={workingDays}
+                                                   setWorkingDays={setWorkingDays}
+                                                   handleGoBack={handleGoBack}
+                                                   handleGoForward={handleGoForward}/>}
+          {submittedForms === 2 && <Students studentList={studentList}
+                                             setStudentList={setStudentList}
+                                             handleGoBack={handleGoBack}
+                                             handleGoForward={handleGoForward}/>}
+          {submittedForms === 3 && <StudentsLessons studentsData={studentsData}
+                                                    setStudentsData={setStudentsData}
+                                                    handleGoBack={handleGoBack}
+                                                    handleGoForward={handleGoForward}/>}
+          {submittedForms === 4 && <Availability studentsData={studentsData}
+                                                 setStudentsData={setStudentsData}
+                                                 workingDays={workingDays}
                                                  handleGoBack={handleGoBack}
-                                                 handleGoForward={handleGoForward}/>}
-        {submittedForms === 2 && <Students studentList={studentList}
-                                           setStudentList={setStudentList}
-                                           handleGoBack={handleGoBack}
-                                           handleGoForward={handleGoForward}/>}
-        {submittedForms === 3 && <StudentsLessons studentsData={studentsData}
-                                                  setStudentsData={setStudentsData}
-                                                  handleGoBack={handleGoBack}
-                                                  handleGoForward={handleGoForward}/>}
-        {submittedForms === 4 && <Availability studentsData={studentsData}
-                                               setStudentsData={setStudentsData}
-                                               workingDays={workingDays}
-                                               handleGoBack={handleGoBack}
-                                               handleSubmit={handleSubmit}/>}
-        {result && <Table result={result}
-                          handleGoBack={handleGoBack}/>}
-      </form>
+                                                 handleSubmit={handleSubmit}/>}
+          {result && <Table result={result}
+                            handleGoBack={handleGoBack}/>}
+        </form>)}
     </div>
   );
 }

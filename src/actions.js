@@ -1,6 +1,7 @@
 "use server"
 
-import { parseTime } from "@/utils"
+import {parseTime} from "@/utils"
+import {removeTrailingSlash} from "next/dist/shared/lib/router/utils/remove-trailing-slash";
 
 class Node {
 	constructor(value) {
@@ -82,7 +83,9 @@ function getNextStudents(data, day, time) {
 	if (nextStudents.length === 0) return null;
 
 	nextStudents.forEach(student => {
+		if (!student || !student.value.name) return;
 		const newData = removeFromData(data, student, 1);
+
 		student.next = getNextStudents(newData, day, student.value.time + student.value.length);
 	})
 
@@ -90,6 +93,7 @@ function getNextStudents(data, day, time) {
 }
 
 function removeFromData(data, student, del) {
+	if (!data || !student) return null;
 	const newData = [];
 
 	data.forEach(item => {
@@ -98,7 +102,7 @@ function removeFromData(data, student, del) {
 		let lessons = JSON.parse(JSON.stringify(item.lessons));
 		if (item.name === student.value.name) {
 			lessons = item.lessons.filter(value => value !== student.value.length);
-			if (del === 1 || lessons.length === 0)
+			if (del || lessons.length === 0)
 				return;
 		}
 		newData.push({...item, lessons: lessons});
@@ -113,7 +117,7 @@ function findMinPath(node, currPath = [], currGapSum = 0, minPathData = { path: 
 	if (node.value.gap) currGapSum += node.value.gap;
 
 	if (!node.next || node.next.length === 0) {
-		const lastGap = parseTime("23:59") - (node.value.time + node.value.length);
+		const lastGap = parseTime("24:00") - (node.value.time + node.value.length);
 		currGapSum += lastGap;
 		if (currGapSum < minPathData.minGap) {
 			minPathData.minGap = currGapSum;
@@ -146,37 +150,61 @@ const getPermutations = (arr) => {
 	return result;
 };
 
-export async function processData(workingDays, studentsData) {
+export async function processData(workingDays, studentsData, getBest = 1) {
 	const data = parseData(workingDays, studentsData);
 
-	const allPermutations = getPermutations(Object.keys(workingDays));
+	let allPermutations;
+	if (getBest)
+		allPermutations = getPermutations(Object.keys(workingDays));
 
-	let cpyData = [];
-	let minGap = Infinity;
+	let cpyData;
 	let result = {};
 
-	allPermutations.forEach(permutation => {
-		cpyData = JSON.parse(JSON.stringify(data));
-		let gap = 0;
-		let paths = {};
+	if (allPermutations) {
+		let minGap = Infinity;
 
-		permutation.forEach(day => {
+		allPermutations.forEach(permutation => {
+			cpyData = JSON.parse(JSON.stringify(data));
+			let gap = 0;
+			let paths = {};
+
+			permutation.forEach(day => {
+				const root = new Node(day);
+
+				root.next = getNextStudents(cpyData, day, 0);
+				if (!root.next) return;
+				const holder = findMinPath(root);
+				paths[day] = holder.path.slice(1).map(val => val.value);
+				gap += holder.minGap;
+
+				for (let student of holder.path) cpyData = removeFromData(cpyData, student, 0);
+			})
+
+			if (gap < minGap) {
+				minGap = gap;
+				result = paths;
+			}
+		})
+
+		cpyData = JSON.parse(JSON.stringify(data));
+		Object.keys(result).forEach(day => {
+			for (let student of result[day]) cpyData = removeFromData(cpyData, new Node(student), 0);
+		})
+	}
+	else {
+		cpyData = JSON.parse(JSON.stringify(data));
+
+		Object.keys(workingDays).forEach(day => {
 			const root = new Node(day);
 
 			root.next = getNextStudents(cpyData, day, 0);
 			const holder = findMinPath(root);
 
-			paths[day] = holder.path.slice(1).map(val => val.value);
-			gap += holder.minGap;
+			result[day] = holder.path.slice(1).map(val => val.value);
 
 			for (let student of holder.path) cpyData = removeFromData(cpyData, student, 0);
 		})
-
-		if (gap < minGap) {
-			minGap = gap;
-			result = paths;
-		}
-	})
+	}
 
 	let error = {msg: ""};
 	if (cpyData.length > 0) {

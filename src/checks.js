@@ -36,8 +36,10 @@ export const checkStudentsData = (workingDays, studentsData) => {
 
 			let prevEndTime = parseTime("00:00");
 
-			for (const timeSlot of student.days[day]) {
+			for (let timeSlot of student.days[day]) {
 				if (timeSlot.length === 0) continue;
+				timeSlot = timeSlot.trim().split(" ").join("");
+				console.log(timeSlot);
 
 				const startTime = parseTime(timeSlot.slice(0, 5));
 				const endTime = parseTime(timeSlot.slice(6));
