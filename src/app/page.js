@@ -111,7 +111,7 @@ export default function Home() {
       <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {(err) ? err.msg : "error placeholder"}
       </p>
-      {(isLoading) ? (<LoadingWheel />) : (<form onSubmit={handleSubmit} className={`m-9 mb-20 mt-0 w-full flex flex-col items-center justify-center`}>
+      {(isLoading) ? (<LoadingWheel />) : (<div className={`m-9 mb-20 mt-0 w-full flex flex-col items-center justify-center`}>
           {submittedForms === 0 && <WorkingDays workingDays={workingDays}
                                                 setWorkingDays={setWorkingDays}
                                                 selectedDays={selectedDays}
@@ -140,7 +140,7 @@ export default function Home() {
                                                     handleSubmit={handleSubmit}/>}
           {result && <Table result={result}
                             handleGoBack={handleGoBack}/>}
-        </form>)}
+        </div>)}
     </div>
   );
 }
