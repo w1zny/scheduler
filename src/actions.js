@@ -158,7 +158,7 @@ export async function processData(workingDays, studentsData, getBest) {
 		allPermutations = getPermutations(Object.keys(workingDays));
 
 	let cpyData;
-	let result = {};
+	let result = {Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: []};
 
 	if (allPermutations) {
 		let minGap = Infinity;
@@ -166,7 +166,7 @@ export async function processData(workingDays, studentsData, getBest) {
 		allPermutations.forEach(permutation => {
 			cpyData = JSON.parse(JSON.stringify(data));
 			let gap = 0;
-			let paths = {};
+			let paths = {Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: []};
 
 			permutation.forEach(day => {
 				const root = new Node(day);
