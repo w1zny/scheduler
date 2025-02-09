@@ -3,7 +3,7 @@ import {ArrowLeft, ArrowRight} from "lucide-react";
 export default function GetBestSchedule({ getBestSchedule, setGetBestSchedule, handleGoBack, handleSubmit }) {
 
 	return (
-		<div className="w-1/2 py-2 px-9 bg-customWhite rounded shadow-md">
+		<div className="w-1/2 py-2 px-9 bg-customWhite rounded-md shadow-md">
 			<div className={`flex items-end`}>
 				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>6</h1>
 				<p className={`px-1 font-bold text-3xl`}>Do you want to get the absolute best schedule?</p>

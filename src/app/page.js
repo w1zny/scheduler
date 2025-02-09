@@ -34,12 +34,12 @@ export default function Home() {
       setSubmittedForms(5);
       return;
     }
-    setSubmittedForms(submittedForms - 1);
+    setSubmittedForms((prev) => Math.max(prev - 1, 0));
   };
 
   const handleGoForward = () => {
     setErr(null);
-    setSubmittedForms(submittedForms + 1);
+    setSubmittedForms((prev) => Math.min(prev + 1, 5));
   };
 
   // data sending
@@ -111,36 +111,53 @@ export default function Home() {
       <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {(err) ? err.msg : "error placeholder"}
       </p>
-      {(isLoading) ? (<LoadingWheel />) : (<div className={`m-9 mb-20 mt-0 w-full flex flex-col items-center justify-center`}>
-          {submittedForms === 0 && <WorkingDays workingDays={workingDays}
-                                                setWorkingDays={setWorkingDays}
-                                                selectedDays={selectedDays}
-                                                setSelectedDays={setSelectedDays}
-                                                handleGoForward={handleGoForward}/>}
-          {submittedForms === 1 && <DailyTimeSlots workingDays={workingDays}
-                                                   setWorkingDays={setWorkingDays}
-                                                   handleGoBack={handleGoBack}
-                                                   handleGoForward={handleGoForward}/>}
-          {submittedForms === 2 && <Students studentList={studentList}
-                                             setStudentList={setStudentList}
-                                             handleGoBack={handleGoBack}
-                                             handleGoForward={handleGoForward}/>}
-          {submittedForms === 3 && <StudentsLessons studentsData={studentsData}
-                                                    setStudentsData={setStudentsData}
-                                                    handleGoBack={handleGoBack}
-                                                    handleGoForward={handleGoForward}/>}
-          {submittedForms === 4 && <Availability studentsData={studentsData}
-                                                 setStudentsData={setStudentsData}
-                                                 workingDays={workingDays}
-                                                 handleGoBack={handleGoBack}
-                                                 handleGoForward={handleGoForward}/>}
-          {submittedForms === 5 && <GetBestSchedule getBestSchedule={getBestSchedule}
-                                                    setGetBestSchedule={setGetBestSchedule}
-                                                    handleGoBack={handleGoBack}
-                                                    handleSubmit={handleSubmit}/>}
-          {result && <Table result={result}
-                            handleGoBack={handleGoBack}/>}
-        </div>)}
+      {(isLoading) ? (<LoadingWheel />) : (
+        <div className="relative w-full overflow-hidden flex justify-center">
+          {(result) ? (<Table result={result} handleGoBack={handleGoBack}/>) : (<div
+            className="w-full flex items-start transition-transform duration-300 ease-in-out"
+            style={{transform: `translateX(-${submittedForms * 100}%)`}}
+          >
+            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+              <WorkingDays workingDays={workingDays}
+                           setWorkingDays={setWorkingDays}
+                           selectedDays={selectedDays}
+                           setSelectedDays={setSelectedDays}
+                           handleGoForward={handleGoForward}/>
+            </div>
+            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+              <DailyTimeSlots workingDays={workingDays}
+                              setWorkingDays={setWorkingDays}
+                              handleGoBack={handleGoBack}
+                              handleGoForward={handleGoForward}/>
+            </div>
+            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+              <Students studentList={studentList}
+                        setStudentList={setStudentList}
+                        handleGoBack={handleGoBack}
+                        handleGoForward={handleGoForward}/>
+            </div>
+            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+              <StudentsLessons studentsData={studentsData}
+                               setStudentsData={setStudentsData}
+                               handleGoBack={handleGoBack}
+                               handleGoForward={handleGoForward}/>
+            </div>
+            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+              <Availability studentsData={studentsData}
+                            setStudentsData={setStudentsData}
+                            workingDays={workingDays}
+                            handleGoBack={handleGoBack}
+                            handleGoForward={handleGoForward}/>
+            </div>
+            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+              <GetBestSchedule getBestSchedule={getBestSchedule}
+                               setGetBestSchedule={setGetBestSchedule}
+                               handleGoBack={handleGoBack}
+                               handleSubmit={handleSubmit}/>
+            </div>
+          </div>)}
+        </div>
+      )}
     </div>
   );
 }

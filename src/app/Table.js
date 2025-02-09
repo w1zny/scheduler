@@ -2,6 +2,7 @@ import { parseNumber} from "@/utils";
 import { ArrowLeft } from "lucide-react";
 
 export default function Students({ result, handleGoBack }) {
+	const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 	const getHeight = (length) => {
 		return { height: `${length*3}px` };
@@ -14,7 +15,7 @@ export default function Students({ result, handleGoBack }) {
 	return (
 		<div className={`flex flex-col justify-center w-10/12 py-2 px-9 bg-customWhite rounded-md shadow-md `}>
 			<div className={`flex justify-around`}>
-				{Object.keys(result).map((day, index) => (
+				{Object.keys(result).slice().map((day, index) => (
 					<div key={index} className={`flex justify-around w-full`}>
 						<table className={`mb-2 min-w-52 items-center justify-start border-separate border-spacing-2`}>
 							<thead>
