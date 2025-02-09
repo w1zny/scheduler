@@ -21,6 +21,7 @@ export default function Home() {
   const [err, setErr] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [seconds, setSeconds] = useState(0);
 
   // exports
   const [workingDays, setWorkingDays] = useState({});
@@ -111,7 +112,7 @@ export default function Home() {
       <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {(err) ? err.msg : "error placeholder"}
       </p>
-      {(isLoading) ? (<LoadingWheel />) : (
+      {(isLoading) ? (<LoadingWheel time={seconds}/>) : (
         <div className="relative w-full overflow-hidden flex justify-center">
           {(result) ? (<Table result={result} handleGoBack={handleGoBack}/>) : (<div
             className="w-full flex items-start transition-transform duration-300 ease-in-out"
