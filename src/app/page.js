@@ -11,12 +11,12 @@ import LoadingWheel from "./LoadingWheel";
 import GetBestSchedule from "./GetBestSchedule";
 
 import {checkStudentsData, checkWorkingDays} from "@/checks";
-import {processData} from "@/actions";
+import {processData} from "@/dataProcessing";
 
 export default function Home() {
-  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedDays, setSelectedDays] = useState(["Monday", "Wednesday", "Thursday"]);
   const [submittedForms, setSubmittedForms] = useState(0);
-  const [studentList, setStudentList] = useState([]);
+  const [studentList, setStudentList] = useState(["Vivien", "Miska", "Petko", "Adamko", "Daniil", "Jonas", "Nathan", "Lukas", "Jozko", "Martin", "Adam", "Filip"]);
 
   const [err, setErr] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +29,7 @@ export default function Home() {
   const [getBestSchedule, setGetBestSchedule] = useState(false);
 
   const handleGoBack = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setErr(null);
     if (submittedForms === null) {
       setResult(null);
@@ -39,6 +40,7 @@ export default function Home() {
   };
 
   const handleGoForward = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setErr(null);
     setSubmittedForms((prev) => Math.min(prev + 1, 5));
   };
@@ -112,45 +114,49 @@ export default function Home() {
       <p className={`p-2 m-4 text-customOrange-light text-lg italic transition-opacity duration-300 ${err ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {(err) ? err.msg : "error placeholder"}
       </p>
-      {(isLoading) ? (<LoadingWheel time={seconds}/>) : (
+      {(isLoading) ? (
+        <div className={`flex flex-col items-center justify-center`}>
+          <LoadingWheel time={seconds}/>
+        </div>
+      ) : (
         <div className="relative w-full overflow-hidden flex justify-center">
           {(result) ? (<Table result={result} handleGoBack={handleGoBack}/>) : (<div
             className="w-full flex items-start transition-transform duration-300 ease-in-out"
             style={{transform: `translateX(-${submittedForms * 100}%)`}}
           >
-            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+            <div className="mb-20 w-full flex-shrink-0 flex justify-center">
               <WorkingDays workingDays={workingDays}
                            setWorkingDays={setWorkingDays}
                            selectedDays={selectedDays}
                            setSelectedDays={setSelectedDays}
                            handleGoForward={handleGoForward}/>
             </div>
-            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+            <div className="mb-20 w-full flex-shrink-0 flex justify-center">
               <DailyTimeSlots workingDays={workingDays}
                               setWorkingDays={setWorkingDays}
                               handleGoBack={handleGoBack}
                               handleGoForward={handleGoForward}/>
             </div>
-            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+            <div className="mb-20 w-full flex-shrink-0 flex justify-center">
               <Students studentList={studentList}
                         setStudentList={setStudentList}
                         handleGoBack={handleGoBack}
                         handleGoForward={handleGoForward}/>
             </div>
-            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+            <div className="mb-20 w-full flex-shrink-0 flex justify-center">
               <StudentsLessons studentsData={studentsData}
                                setStudentsData={setStudentsData}
                                handleGoBack={handleGoBack}
                                handleGoForward={handleGoForward}/>
             </div>
-            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+            <div className="mb-20 w-full flex-shrink-0 flex justify-center">
               <Availability studentsData={studentsData}
                             setStudentsData={setStudentsData}
                             workingDays={workingDays}
                             handleGoBack={handleGoBack}
                             handleGoForward={handleGoForward}/>
             </div>
-            <div className="mb-5 w-full flex-shrink-0 flex justify-center">
+            <div className="mb-20 w-full flex-shrink-0 flex justify-center">
               <GetBestSchedule getBestSchedule={getBestSchedule}
                                setGetBestSchedule={setGetBestSchedule}
                                handleGoBack={handleGoBack}

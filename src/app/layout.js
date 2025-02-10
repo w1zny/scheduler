@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
         rel="stylesheet"/>
     </head>
     <body className={`text-customGray bg-customWhite-dark flex flex-col min-h-screen`}>
-      <nav className={`bg-customWhite-light pb-4 pt-1 shadow-md sticky top-0 z-5`}>
+      <nav className={`bg-customWhite-light pb-4 pt-1 shadow-md sticky top-0 z-10`}>
         <ul className={`px-12`}>
           <li className={`flex items-end cursor-default font-logoFont text-4xl font-bold text-customGray-light`}>
             <p className={`select-none`}>Simple Schedule Creator</p>

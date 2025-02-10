@@ -21,7 +21,7 @@ export default function Students({ result, handleGoBack }) {
 	}
 
 	return (
-		<div className={`w-full mx-16 py-2 px-9 bg-customWhite rounded-md shadow-md`}>
+		<div className={`w-full mx-16 mb-12 py-2 px-9 bg-customWhite rounded-md shadow-md`}>
 			<div className={`w-full flex justify-around`}>
 				{Object.keys(result).map((day, index) => (
 					<div key={index} className={`flex flex-col items-center`}>
@@ -34,7 +34,7 @@ export default function Students({ result, handleGoBack }) {
 									<div className={`my-1 w-full border-2 rounded border-customOrange-light`}
 											 style={getHeight(student.gap)}></div>}
 								<div
-									className={`my-1 min-w-40 px-4 bg-customWhite-light rounded flex flex-col items-center justify-center shadow-md`}
+									className={`my-1 min-w-40 px-4 bg-customWhite-light rounded shadow-md flex flex-col items-center justify-center hover:shadow-sm hover:cursor-pointer`}
 									style={getHeight(student.length)}
 								>
 									<p className={`text-2xl text-customGray font-medium`}>{student.name}</p>

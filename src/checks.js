@@ -25,11 +25,13 @@ export const checkStudentsData = (workingDays, studentsData) => {
 		return { msg: "There are no students listed!", page: 2 };
 
 	for (const student of studentsData) {
-		const lessons = student.lessons.trim().split(" ").join("").split(",");
+		let lessons = student.lessons.trim().split(" ").join("").split(",");
 		let timeSlotCounter = 0;
 
 		if (lessons.some(lesson => isNaN(parseInt(lesson))))
 			return { msg: student.name + "'s lesson lengths are invalid!", page: 3 };
+
+		lessons = lessons.map(lesson => parseInt(lesson)).sort((a, b) => b - a);
 
 		for (const day of Object.keys(student.days)) {
 			if (!(day in workingDays) || student.days[day].length === 0) continue;
@@ -49,12 +51,21 @@ export const checkStudentsData = (workingDays, studentsData) => {
 				if (prevEndTime > startTime)
 					return { msg: student.name + "'s time slots are in an incorrect order!", page: 4 };
 
+				for (let lesson of lessons) {
+					if (startTime + lesson <= endTime) {
+						lessons = lessons.filter(item => item !== lesson);
+					}
+				}
+
 				timeSlotCounter++;
 				prevEndTime = endTime;
 			}
 		}
 		if (timeSlotCounter === 0)
 			return { msg: "There are no time slots given for " + student.name +"!", page: 4 };
+
+		if (lessons.length > 0)
+			return { msg: student.name + "'s time slots and lessons don't add up!", page: 3 };
 	}
 
 	return null;
