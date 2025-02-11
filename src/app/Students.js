@@ -26,7 +26,7 @@ export default function Students({ studentList, setStudentList, handleGoBack, ha
 				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>3</h1>
 				<p className={`px-1 font-bold text-3xl`}>What are the names of your students?</p>
 			</div>
-			<p className={`text-gray-400 py-1 italic`}>Here you should also list every extra lessons like Class Period and Breaks</p>
+			<p className={`text-gray-400 py-1 italic`}>Here you should also list extra lessons like Class Period</p>
 			<div className={`p-5 px-9 pb-9 flex items-end justify-between`}>
 				<div className={`flex-column w-full`}>
 					<div className={`flex items-center mx-5`}>

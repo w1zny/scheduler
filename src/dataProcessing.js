@@ -1,16 +1,11 @@
 "use server"
 
 import {parseTime} from "@/utils"
-import {removeTrailingSlash} from "next/dist/shared/lib/router/utils/remove-trailing-slash";
 
 class Node {
 	constructor(value) {
 		this.value = value;
 		this.next = [];
-	}
-
-	toString() {
-		return this.value;
 	}
 }
 

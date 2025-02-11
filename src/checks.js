@@ -51,11 +51,9 @@ export const checkStudentsData = (workingDays, studentsData) => {
 				if (prevEndTime > startTime)
 					return { msg: student.name + "'s time slots are in an incorrect order!", page: 4 };
 
-				for (let lesson of lessons) {
-					if (startTime + lesson <= endTime) {
+				for (let lesson of lessons)
+					if (startTime + lesson <= endTime)
 						lessons = lessons.filter(item => item !== lesson);
-					}
-				}
 
 				timeSlotCounter++;
 				prevEndTime = endTime;

@@ -8,10 +8,11 @@ export default function GetBestSchedule({ getBestSchedule, setGetBestSchedule, h
 				<h1 className={`font-logoFont text-8xl text-customOrange-light`}>6</h1>
 				<p className={`px-1 font-bold text-3xl`}>Do you want to get the absolute best schedule?</p>
 			</div>
-			<p className={`text-gray-400 pt-1 italic`}>Absolute best scheduling can take a lot of time depending on the
+			<p className={`mb-1 text-gray-400 pt-1 italic`}>Absolute best scheduling can take a lot of time depending on the
 				input.</p>
-			<p className={`text-gray-400 italic`}>It&#39;s best suited for max. of approximately 3 working days and 10 students.</p>
-			<p className={`text-gray-400 italic`}>For regular purposes I DON&#39;T recommend checking this option.</p>
+			<p className={`my-1 text-gray-400 italic`}>It&#39;s best suited for maximum of approximately 3 working days, 10
+				students, and 2 lessons for each student.</p>
+			<p className={`my-1 text-gray-400 italic`}>I recommend running the calculation without this box checked first. If it can&#39;t find the full schedule come back, check the option, and run again.</p>
 			<label className={`text-2xl flex items-center m-5 mx-10 hover:cursor-pointer hover:text-customGray-light`}>
 				<input type="checkbox"
 							 checked={getBestSchedule}
