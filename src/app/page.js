@@ -14,9 +14,9 @@ import {checkStudentsData, checkWorkingDays} from "@/checks";
 import {processData} from "@/dataProcessing";
 
 export default function Home() {
-  const [selectedDays, setSelectedDays] = useState(["Monday", "Wednesday", "Thursday"]);
+  const [selectedDays, setSelectedDays] = useState([]);
   const [submittedForms, setSubmittedForms] = useState(0);
-  const [studentList, setStudentList] = useState(["Vivien", "Miska", "Petko", "Adamko", "Daniil", "Jonas", "Nathan", "Lukas", "Jozko", "Martin", "Adam", "Filip"]);
+  const [studentList, setStudentList] = useState([]);
 
   const [err, setErr] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
