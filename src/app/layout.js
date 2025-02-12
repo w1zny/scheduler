@@ -27,8 +27,7 @@ export default function RootLayout({ children }) {
       <main className={`flex-grow`}>
         {children}
       </main>
-      <footer className={`flex flex-col items-center justify-between h-12 font-medium text-lg bg-customWhite`}>
-        <div className="w-full h-3 bg-gradient-to-b from-black/30 to-transparent"></div>
+      <footer className={`flex flex-col items-center justify-between h-12 font-medium text-lg bg-transparent`}>
         <p className={`mb-2`}>2025 Jakub Vizner</p>
       </footer>
     </body>
