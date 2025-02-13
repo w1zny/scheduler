@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
       <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Slab:wght@100..900&display=swap"
         rel="stylesheet"/>
+      <title>Simple Schedule Creator</title>
     </head>
     <body className={`text-customGray bg-customWhite-dark flex flex-col min-h-screen`}>
       <nav className={`bg-customWhite-light pb-4 pt-1 shadow-md sticky top-0 z-10`}>
